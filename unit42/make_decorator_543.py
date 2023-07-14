@@ -67,3 +67,100 @@ trace_world()                   # 반환된 함수를 호출
 """ 물론 trace에 다른 함수를 넣은 뒤 반환된 함수를 호출하면 해당 함수의 시작과 끝을 출력할 수 있다."""
 
 
+
+
+
+# @으로 데코레이터 사용하기
+
+""" 다음과 같이 호출할 함수 위에 @데코레이터 형식으로 지정한다.
+
+    @데코레이터
+    def 함수이름():
+        코드
+        
+"""
+print()
+print()
+
+
+def trace(func):                                # 호출할 함수를 매개변수로 받음
+    def wrapper():
+        print(func.__name__,'함수 시작')         # __name__으로 함수 이름 출력
+        func()                                  # 매개변수로 받은 함수를 출력
+        print(func.__name__,'함수 끝')          
+    return wrapper                              # wrapper 함수 반환
+
+
+
+@ trace
+def hello():    # @데코레이터
+    print('hello')
+
+@ trace
+def world():    # @데코레이터
+    print('world')
+
+
+hello()         # 함수를 그대로 호출
+world()         # 함수를 그대로 호출
+
+""" hello와 world 함수 위에 @trace를 붙인 뒤에 hello와 world 함수를 그대로 출력하면 된다."""
+
+
+""" 물론 다른 함수 위에 @trace를 붙인 뒤 함수를 호출하면 해당 함수의 시작과 끝을 출력할 수 있다."""
+
+""" 이 원리를 말로 설명하겠다. 함수 trace는 함수를 매개변수로 삼는다. @데코레이터를 hello 와 world 함수에서 사용할 시
+    hello와 world는 trace의 인자가 된다. 그래서 trace 안에 있는 함수 wrapper에서 func()를 실행하도록 한다."""
+
+
+""" 이렇게 데코레이터는 함수를 감싸는 형태로 이루어져 있다. 따라서 데코레이터는 기존 함수를 수정하지 않으면서 추가 가능을 구현할 때 사용한다."""
+
+
+
+
+# 참고: 데코레이터 여러 개 지정하기
+
+
+""" 함수에는 데코레이터 여러 개 지정할 수 있다. 다음과 같이 함수 위에 데코레이터를 여러 줄로 지정해준다. 이때 데코레이터가 실행되는 순서는 위에서
+    아래 순이다.
+    
+    
+    @ 데코레이터1
+    @ 데코레이터2
+    def 함수이름():
+        코드
+    
+    
+    """
+
+
+def decorator1(func):
+    def wrapper():
+        print('decorator1')
+        func()
+    return wrapper
+
+
+def decorator2(func):
+    def wrapper():
+        print('decorator2')
+        func()
+    return wrapper
+
+
+
+
+@ decorator1
+@ decorator2
+def hello():
+    print('hello')
+
+
+
+hello()
+# decorator1
+# decorator2
+# hello
+#
+#
+
